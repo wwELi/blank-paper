@@ -1,4 +1,6 @@
 
+使用docker-compose管理 nginx, mysql, node 
+
 ## 启动
 ```
 docker-compose up -d --build

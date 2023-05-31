@@ -1,0 +1,10 @@
+{
+    "dev": {
+      "driver": "mysql",
+      "user": "root",
+      "password": "admin123",
+      "host": "localhost",
+      "database": "sys",
+      "schema": "public"
+    }
+  }

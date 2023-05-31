@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <style>
+        th {
+            min-width: 200px;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>email</th>
+                <th>password</th>
+              </tr>
+        </thead>
+        <tbody id="listEl">
+        </tbody>
+
+      </table>
+</body>
+<script>
+    fetch('/api/users', { headers: { Authorization: window.sessionStorage.getItem('token') } })
+        .then((res) => {
+            if (res.status === 401) {
+                window.location.replace('./login.html')
+                throw new Error()
+            }
+            return res.json()
+        })
+        .then((list) => {
+            const html = list.reduce((str, item) => str + `
+            <tr><td>${item.name}</td><td>${item.email}</td><td>${item.password}</td></tr>
+            `, '')
+
+            listEl.innerHTML = html;
+
+        })
+</script>
+</html>

@@ -1,0 +1,55 @@
+version: '3'
+
+services: 
+  nodejs: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: demonodejs
+    restart: unless-stopped
+    ports: 
+      - "8080:8080"
+    networks: 
+      - app-network
+        # 新增静态服务器
+  webServer:
+    image: nginx
+    container_name: webServer
+    restart: unless-stopped
+    ports: 
+      - "3000:80"
+    # 数据卷,将本地的文件与docker容器中的目录关联起来
+    volumes: 
+      - ./views:/var/www/html
+      - ./nginx:/etc/nginx/conf.d
+    depends_on: 
+      - nodejs
+    networks: 
+      - app-network
+  db:
+    image:  mysql/mysql-server:8.0.23 #daocloud.io/library/mysql:8
+    container_name: db
+    restart: unless-stopped
+    ports: 
+      - "3306:3306"
+    environment: 
+      - MYSQL_ROOT_PASSWORD=admin123
+      # - MYSQL_USER=test1 # 创建一个test1的用户
+      # - MYSQL_PASSWORD=test1 # test1用户密码
+      - MYSQL_DATABASE=nodeApp
+      - TZ=Asia/Shanghai # 设置时区
+    volumes: 
+      - ./mysql/data:/var/lib/mysql                                                                             
+      - ./mysql/conf:/etc/mysql/conf.d                                                                          
+      - ./mysql/logs:/log    
+      - ./mysql/init:/docker-entrypoint-initdb.d                                                                                   
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    # command: --default-authentication-plugin=mysql_native_password #这行代码解决无法访问的问题
+
+    networks: 
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

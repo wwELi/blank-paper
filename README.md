@@ -18,6 +18,11 @@ docker exec -it [containerId] bash
 exit
 ```
 
+## use db-migrate
+```
+npm run mg --desc=xxxx
+```
+
 ## 问题解决
 
 - 如何mysql 工具无法连接 docker mysql 

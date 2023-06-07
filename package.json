@@ -2,9 +2,15 @@
   "name": "blank-paper",
   "version": "0.0.0",
   "private": true,
-  "keywords": ["docker-compose", "nginx", "mysql"],
+  "keywords": [
+    "docker-compose",
+    "nginx",
+    "mysql"
+  ],
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "mg": "db-migrate create $npm_config_desc",
+    "mg:up": "db-migrate up"
   },
   "dependencies": {
     "@types/node": "^20.2.5",
@@ -15,6 +21,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-session": "^1.17.3",
+    "formidable": "^2.1.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.0",

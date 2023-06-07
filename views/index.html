@@ -25,9 +25,15 @@
         </thead>
         <tbody id="listEl">
         </tbody>
-
+        <video id="my_video" autoplay></video>
+        <button onclick="photograph()">拍照</button>
+        <button onclick="openVideo()">打开摄像头</button>
+        <button onclick="closeVideo()">关闭摄像头</button>
+        <button onclick="upload()">上传</button>
+        <input type="file" accept=".png" id="chooseFile">
       </table>
 </body>
+<script src="./index.js"></script>
 <script>
     fetch('/api/users', { headers: { Authorization: window.sessionStorage.getItem('token') } })
         .then((res) => {
@@ -39,11 +45,11 @@
         })
         .then((list) => {
             const html = list.reduce((str, item) => str + `
-            <tr><td>${item.name}</td><td>${item.email}</td><td>${item.password}</td></tr>
+            <tr><td>${item.name}</td><td>${item.email}</td><td>${item.password}</td><td><image width="20" height="20" src="/api/users/${item.name}/avatar"></td></tr>
             `, '')
 
             listEl.innerHTML = html;
 
-        })
+        });
 </script>
 </html>

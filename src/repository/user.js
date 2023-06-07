@@ -3,7 +3,7 @@ const { v4:uuidv4 } = require('uuid') ;
 
 function createQuery() {
     const connection = mysql.createConnection({
-        host: 'db',
+        host: '127.0.0.1',
         port: 3306,
         user: 'root',
         password: 'admin123',
@@ -29,6 +29,13 @@ function createQuery() {
             const id = uuidv4();
             return new Promise((resolve, reject) => {
                 connection.query("INSERT INTO users (id,name,password,email) VALUES(?,?,?,?)", [id,username,password,email], (err, result) => {
+                    err ? reject(err) : resolve(result);
+                })
+            })
+        },
+        updateAvatarById(userId, url) {
+            return new Promise((resolve, reject) => {
+                connection.query("UPDATE users SET avatar=? WHERE id=?", [url, userId], (err, result) => {
                     err ? reject(err) : resolve(result);
                 })
             })

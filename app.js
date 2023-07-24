@@ -9,6 +9,7 @@ const cors = require('cors');
 var indexRouter = require('./src/routes/index');
 var usersRouter = require('./src/routes/users');
 const authRouter = require('./src/routes/auth');
+const fileRouter = require('./src/routes/file');
 var passport = require('./src/config/passport');
 
 var app = express();
@@ -23,7 +24,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, './views')));
 app.use(expressSession({
   // 你喜欢的任意名字作为一个加密用的字符串
   secret: 'SECRET',
@@ -34,12 +35,13 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', indexRouter);
-app.use('/auth', authRouter)
-app.use('/users', usersRouter);
+app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter);
+app.use('/api/file', fileRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  next(createError(404, '404 Not Found'));
 });
 
 // error handler
